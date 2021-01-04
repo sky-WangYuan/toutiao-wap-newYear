@@ -1,12 +1,10 @@
 <template>
-  <div class="container">布局
-    <router-view></router-view>
-  </div>
+  <div class="container">搜索结果</div>
 </template>
 
 <script>
 export default {
-  name: 'layout'
+  name: 'result'
 }
 </script>
 

@@ -1,12 +1,10 @@
 <template>
-  <div class="container">布局
-    <router-view></router-view>
-  </div>
+  <div class="container">编辑资料</div>
 </template>
 
 <script>
 export default {
-  name: 'layout'
+  name: 'profile'
 }
 </script>
 
