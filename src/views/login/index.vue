@@ -1,5 +1,7 @@
 <template>
-  <div class="container">登录</div>
+  <div class="container">
+    <van-nav-bar title="登录" left-arrow></van-nav-bar>
+  </div>
 </template>
 
 <script>

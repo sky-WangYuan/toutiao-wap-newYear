@@ -1,5 +1,7 @@
 <template>
-  <div class="container">编辑资料</div>
+  <div class="container">
+    <van-nav-bar left-arrow title="编辑资料" right-text="保存"></van-nav-bar>
+  </div>
 </template>
 
 <script>

@@ -1,5 +1,7 @@
 <template>
-  <div class="container">聊天</div>
+  <div class="container">
+    <van-nav-bar title="智能聊天" left-arrow></van-nav-bar>
+  </div>
 </template>
 
 <script>

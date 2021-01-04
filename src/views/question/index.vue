@@ -1,5 +1,9 @@
 <template>
-  <div class="container">问答</div>
+  <div class="container">
+    <van-skeleton title :row="3" />
+    <van-skeleton title :row="3" />
+    <van-skeleton title :row="3" />
+  </div>
 </template>
 
 <script>
