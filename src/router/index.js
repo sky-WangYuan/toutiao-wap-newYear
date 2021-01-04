@@ -5,7 +5,7 @@ import VueRouter from 'vue-router'
 const Layout = () => import('@/views/layout')
 const Home = () => import('@/views/home')
 const Question = () => import('@/views/question')
-const Video = () => import('@/views/video')
+const Videos = () => import('@/views/videos')
 const User = () => import('@/views/user')
 const UserProfile = () => import('@/views/user/profile')
 const UserChat = () => import('@/views/user/chat')
@@ -23,7 +23,7 @@ const routes = [
     children: [
       { path: '/', component: Home },
       { path: '/question', component: Question },
-      { path: '/video', component: Video },
+      { path: '/video', component: Videos },
       { path: '/user', component: User }
     ]
   },
