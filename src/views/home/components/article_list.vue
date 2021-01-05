@@ -43,32 +43,52 @@
 </template>
 
 <script>
+import { article } from '@/api/article'
 export default {
   name: 'article_list',
+  props: {
+    channel_id: {
+      type: Number,
+      require: true,
+      default: null
+    }
+  },
   data () {
     return {
       loading: false,
       finished: false,
       articleList: [],
       onrefresh: false, // 刷新状态
-      refreshText: '' // 刷新成功提示文字
+      refreshText: '', // 刷新成功提示文字
+      timestamp: null // 请求列表的时间戳参数
     }
   },
   methods: {
     // 上拉加载功能
-    onLoad () {
+    async onLoad () {
       console.log('加载数据')
-      setTimeout(() => { // 模拟ajax经过1s后请求的数据
-        if (this.articleList.length < 50) {
-          // 请求数据
-          const res = Array.from(Array(10), (value, index) => this.articleList.length + index + 1)
-          //   console.log(res, ...res)
-          this.articleList.push(...res)
-          this.loading = false
-        } else {
-          this.finished = true // 显示加载完成
-        }
-      }, 1000)
+
+      // 如果有timestamp则传入历史时间戳，如果没有则用最新时间戳
+      const res = await article({ channel_id: this.channel_id, timestamp: this.timestamp || Date.now() })
+      this.articleList.push(...res.results)
+      this.loading = false
+      if (res.pre_timestamp) { // 如果返回的数据中有历史时间戳，则给timestap上拉加载使用
+        this.timestamp = res.pre_timestamp
+      } else {
+        this.finished = true // 如果没有时间戳，显示加载完成的文本信息
+      }
+
+      // setTimeout(() => { // 模拟ajax经过1s后请求的数据
+      //   if (this.articleList.length < 50) {
+      //     // 请求数据
+      //     const res = Array.from(Array(10), (value, index) => this.articleList.length + index + 1)
+      //     //   console.log(res, ...res)
+      //     this.articleList.push(...res)
+      //     this.loading = false
+      //   } else {
+      //     this.finished = true // 显示加载完成
+      //   }
+      // }, 1000)
     },
     // 下拉刷新功能
     onRefresh () {
