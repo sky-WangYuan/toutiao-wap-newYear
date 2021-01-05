@@ -3,20 +3,20 @@
     <!-- 标签栏目 -->
     <van-tabs v-model="activeIndex" swipeable>
       <van-tab :title="'标签'+ item" v-for="item in 8" :key="item">
-        <!-- 内容区 阅读记忆-->
-        <div class="scroll-wrapper">
-            <van-cell-group>
-              <van-cell :title="item"  label="描述信息" v-for="obj in 20" :key="obj" />
-            </van-cell-group>
-        </div>
+       <!-- 列表组件 -->
+       <article-list></article-list>
       </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script>
+import ArticleList from './components/article_list'
 export default {
   name: 'home',
+  components: {
+    ArticleList
+  },
   data () {
     return {
       activeIndex: 0
