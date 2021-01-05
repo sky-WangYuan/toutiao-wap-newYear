@@ -3,11 +3,13 @@ import Vuex from 'vuex'
 import * as auth from '@/utils/auth'
 
 Vue.use(Vuex)
-
+const res = auth.getUser()
+// debugger
 export default new Vuex.Store({
   state: {
     // token信息
-    user: auth.getUser()
+    user: res
+    // user: auth.getUser()
   },
   mutations: {
     // 更新token（修改state数据）

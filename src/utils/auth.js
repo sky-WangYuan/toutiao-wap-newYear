@@ -10,6 +10,9 @@ export function setUser (user) {
 
 // 获取用户信息
 export function getUser () {
+  // const res = JSON.parse(localStorage.getItem(user_token) || '{}')
+  // // debugger
+  // return res
   return JSON.parse(localStorage.getItem(user_token) || '{}') // 空对象不会报错
 }
 
