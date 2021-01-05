@@ -35,6 +35,7 @@ const routes = [
   { path: '/article', component: Article }
 ]
 
+// 路由实例对象
 const router = new VueRouter({
   routes
 })
