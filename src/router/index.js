@@ -1,5 +1,12 @@
 import Vue from 'vue'
+// import VueRouter from 'vue-router'
 import VueRouter from 'vue-router'
+
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
+}
 
 // 按需导入路由-webpack时解决首屏加载慢问题
 const Layout = () => import('@/views/layout')
