@@ -2,7 +2,7 @@
   <div class="container">
     <!-- 标签栏目 -->
     <van-tabs v-model="activeIndex" swipeable>
-      <van-tab :title="'标签'+ item" v-for="item in 8" :key="item">
+      <van-tab :title="item.name" v-for="item in channelsList" :key="item.id">
        <!-- 列表组件 -->
        <article-list></article-list>
       </van-tab>
@@ -12,6 +12,7 @@
 
 <script>
 import ArticleList from './components/article_list'
+import { Channels } from '@/api/channels'
 export default {
   name: 'home',
   components: {
@@ -19,7 +20,17 @@ export default {
   },
   data () {
     return {
-      activeIndex: 0
+      activeIndex: 0,
+      channelsList: []
+    }
+  },
+  created () {
+    this.getChannels() // 初始化时获取数据
+  },
+  methods: {
+    async getChannels () {
+      const { channels } = await Channels()
+      this.channelsList = channels
     }
   }
 }
