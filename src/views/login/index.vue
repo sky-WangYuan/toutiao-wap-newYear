@@ -73,6 +73,7 @@ export default {
         console.log(res)
         // 2、更新vuex和本地存储
         this.updataUser({ user: res }) // 传参数payload
+        this.$mynotify({ message: '登录成功', type: 'success' })
       }
     },
     ...mapMutations(['updataUser'])

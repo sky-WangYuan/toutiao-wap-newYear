@@ -8,10 +8,12 @@ import Vant from 'vant'
 import 'vant/lib/index.less' // 修改登录主题颜色
 import '@/styles/index.less' // 覆盖vant样式
 import 'amfe-flexible'
+import alertMsg from '@/utils/alertMsg' // 封装的提示小插件
 
 Vue.config.productionTip = false
 
 Vue.use(Vant)
+Vue.use(alertMsg)
 
 new Vue({
   router,
