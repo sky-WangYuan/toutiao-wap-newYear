@@ -74,6 +74,8 @@ export default {
         // 2、更新vuex和本地存储
         this.updataUser({ user: res }) // 传参数payload
         this.$mynotify({ message: '登录成功', type: 'success' })
+        const beforePath = this.$route.query.redirectUrl // 获取登陆前的地址，如果登录前有地址就跳转到登录前的地址否则跳首页
+        this.$router.push(beforePath || '/')
       }
     },
     ...mapMutations(['updataUser'])
