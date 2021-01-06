@@ -51,16 +51,20 @@ export default {
       }
     },
     // 下拉刷新功能
-    onRefresh () {
-      setTimeout(() => {
-        // 1、数据
-        const res = Array.from(Array(10), (value, index) => index + 1)
-        // 2、数据放在list头部
-        this.articleList.unshift(...res)
-        // 3、关闭状态+提示文字
-        this.onrefresh = false
-        this.refreshText = `刷新了${res.length}条数据`
-      }, 1000)
+    async onRefresh () {
+      // 下拉用 最新时间 获取最新数据
+      const res = await article({ channel_id: this.channel_id, timestamp: Date.now() })
+      this.onrefresh = false // 关闭加载状态
+
+      if (res.results.length) {
+        // 有数据
+        this.articleList = res.results
+        this.refreshText = `更新了${res.results.length}条数据`
+        this.finished = false
+        this.timestamp = res.pre_timestamp
+      } else {
+        this.refreshText = '已是最新数据'
+      }
     }
   }
 }
