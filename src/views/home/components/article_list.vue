@@ -41,6 +41,7 @@ export default {
   methods: {
     // 获取文章列表
     async onLoad () {
+      await this.$sleep() // 代码强制等待
       const res = await article({ channel_id: this.channel_id, timestamp: this.timestamp || Date.now() })
       this.articleList.push(...res.results)
       this.loading = false
@@ -52,6 +53,7 @@ export default {
     },
     // 下拉刷新功能
     async onRefresh () {
+      await this.$sleep() // 代码强制等待
       // 下拉用 最新时间 获取最新数据
       const res = await article({ channel_id: this.channel_id, timestamp: Date.now() })
       this.onrefresh = false // 关闭加载状态
