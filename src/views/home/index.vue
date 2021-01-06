@@ -4,7 +4,7 @@
     <van-tabs v-model="activeIndex" swipeable>
       <van-tab :title="item.name" v-for="item in channelsList" :key="item.id">
        <!-- 列表组件 -->
-       <article-list></article-list>
+       <article-list :channel_id="item.id"></article-list>
       </van-tab>
     </van-tabs>
   </div>

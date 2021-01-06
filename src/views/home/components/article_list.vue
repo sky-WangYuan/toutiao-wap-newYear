@@ -13,7 +13,7 @@
                 finished-text="没有更多了"
                 @load="onLoad"
                 >
-                <van-cell v-for="item in articleList" :key="item" :title="item" />
+                <van-cell v-for="item in articleList" :key="item.art_id.toString()"  />
                     <!-- 每项新闻的布局 -->
                     <div class="article_item">
                         <h3 class="van-ellipsis">PullRefresh下拉刷新PullRefresh下拉刷新下拉刷新下拉刷新</h3>
@@ -43,33 +43,39 @@
 </template>
 
 <script>
+import { article } from '@/api/article'
 export default {
   name: 'article_list',
+  props: ['channel_id'],
   data () {
     return {
       loading: false,
       finished: false,
       articleList: [],
       onrefresh: false, // 刷新状态
-      refreshText: '' // 刷新成功提示文字
+      refreshText: '', // 刷新成功提示文字
+      timestamp: null
     }
   },
+  created () {
+    this.onLoad()
+  },
   methods: {
-    // 上拉加载功能
-    onLoad () {
-      console.log('加载数据')
-      setTimeout(() => { // 模拟ajax经过1s后请求的数据
-        if (this.articleList.length < 50) {
-          // 请求数据
-          const res = Array.from(Array(10), (value, index) => this.articleList.length + index + 1)
-          //   console.log(res, ...res)
-          this.articleList.push(...res)
-          this.loading = false
-        } else {
-          this.finished = true // 显示加载完成
-        }
-      }, 1000)
+    // 获取文章列表
+    async onLoad () {
+      const res = await article({ channel_id: this.channel_id, timestamp: this.timestamp || Date.now() })
+      this.articleList.push(...res.results)
+      this.loading = false
+      if (res.pre_timestamp) {
+        this.timestamp = res.pre_timestamp
+      } else {
+        this.finished = true
+      }
     },
+    // 上拉加载功能
+    // onLoad () {
+    //   console.log('加载数据')
+    // },
     // 下拉刷新功能
     onRefresh () {
     //   console.log('下拉刷新')
