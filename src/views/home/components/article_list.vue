@@ -13,30 +13,8 @@
                 finished-text="没有更多了"
                 @load="onLoad"
                 >
-                <van-cell v-for="item in articleList" :key="item.art_id.toString()"  />
-                    <!-- 每项新闻的布局 -->
-                    <div class="article_item">
-                        <h3 class="van-ellipsis">PullRefresh下拉刷新PullRefresh下拉刷新下拉刷新下拉刷新</h3>
-                        <!-- 三张图开始 -->
-                        <div class="img_box">
-                            <van-image class="w33" fit="cover" src="https://img.yzcdn.cn/vant/cat.jpeg"/>
-                            <van-image class="w33" fit="cover" src="https://img.yzcdn.cn/vant/cat.jpeg"/>
-                            <van-image class="w33" fit="cover" src="https://img.yzcdn.cn/vant/cat.jpeg"/>
-                        </div>
-                        <!-- 三张图结束 -->
-
-                        <!-- 一张图开始 -->
-                        <div class="img_box">
-                            <van-image class="w100" fit="cover" src="https://img.yzcdn.cn/vant/cat.jpeg"/>
-                        </div>
-                        <!-- 一张图end -->
-                        <div class="info_box">
-                            <span>你像一阵风</span>
-                            <span>8评论</span>
-                            <span>10分钟前</span>
-                            <span class="close"><van-icon name="cross"></van-icon></span>
-                        </div>
-                    </div>
+                <van-cell v-for="item in articleList" :key="item.art_id.toString()"  :title="item.title" :label="item.aut_name" />
+                    <!-- vant组件库中的van-cell更新单标签-无法使用之前van-cell双标签遍历标签内部数据图片和文字 --------------------------------->
                 </van-list>
             </van-pull-refresh>
         </div>
@@ -72,13 +50,8 @@ export default {
         this.finished = true
       }
     },
-    // 上拉加载功能
-    // onLoad () {
-    //   console.log('加载数据')
-    // },
     // 下拉刷新功能
     onRefresh () {
-    //   console.log('下拉刷新')
       setTimeout(() => {
         // 1、数据
         const res = Array.from(Array(10), (value, index) => index + 1)
