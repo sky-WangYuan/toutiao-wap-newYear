@@ -7,6 +7,7 @@
        <article-list :channel_id="item.id"></article-list>
       </van-tab>
     </van-tabs>
+
   </div>
 </template>
 
@@ -21,7 +22,8 @@ export default {
   data () {
     return {
       activeIndex: 0,
-      channelsList: []
+      channelsList: [],
+      showMoreAction: false
     }
   },
   created () {
@@ -31,6 +33,9 @@ export default {
     async getChannels () {
       const { channels } = await Channels()
       this.channelsList = channels
+    },
+    openMoreAction () {
+      this.showMoreAction = true
     }
   }
 }
@@ -91,5 +96,8 @@ export default {
       font-size: 20px;
     }
   }
+}
+.van-popup--center {
+  width: 78%;
 }
 </style>

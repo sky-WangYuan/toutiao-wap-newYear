@@ -13,7 +13,7 @@
                 finished-text="没有更多了"
                 @load="onLoad"
                 >
-                <van-cell v-for="item in articleList" :key="item.art_id.toString()"  :title="item.title" :label="item.aut_name" />
+                <van-cell v-for="item in articleList"  :key="item.art_id.toString()" value="X"  :title="item.title" :label="item.pubdate | time" />
                     <!-- vant组件库中的van-cell更新单标签-无法使用之前van-cell双标签遍历标签内部数据图片和文字 --------------------------------->
                 </van-list>
             </van-pull-refresh>
@@ -22,9 +22,13 @@
 
 <script>
 import { article } from '@/api/article'
+import { mapState } from 'vuex'
 export default {
   name: 'article_list',
   props: ['channel_id'],
+  computed: {
+    ...mapState(['user'])
+  },
   data () {
     return {
       loading: false,
@@ -112,5 +116,8 @@ export default {
       }
     }
   }
+}
+.van-cell__value span {
+  display: inline-block;
 }
 </style>
