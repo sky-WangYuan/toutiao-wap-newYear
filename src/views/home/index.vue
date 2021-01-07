@@ -4,9 +4,13 @@
     <van-tabs v-model="activeIndex" swipeable>
       <van-tab :title="item.name" v-for="item in channelsList" :key="item.id">
        <!-- 列表组件 -->
-       <article-list :channel_id="item.id"></article-list>
+       <article-list @showAction="openAction" :channel_id="item.id"></article-list>
       </van-tab>
     </van-tabs>
+    <!-- 弹出反馈组件 -->
+    <van-popup v-model="isShowAction">
+      <more-action></more-action>
+    </van-popup>
 
   </div>
 </template>
@@ -14,16 +18,18 @@
 <script>
 import ArticleList from './components/article_list'
 import { Channels } from '@/api/channels'
+import MoreAction from './components/moreAction'
 export default {
   name: 'home',
   components: {
-    ArticleList
+    ArticleList,
+    MoreAction
   },
   data () {
     return {
       activeIndex: 0,
       channelsList: [],
-      showMoreAction: false
+      isShowAction: false
     }
   },
   created () {
@@ -34,8 +40,8 @@ export default {
       const { channels } = await Channels()
       this.channelsList = channels
     },
-    openMoreAction () {
-      this.showMoreAction = true
+    openAction () {
+      this.isShowAction = true
     }
   }
 }
