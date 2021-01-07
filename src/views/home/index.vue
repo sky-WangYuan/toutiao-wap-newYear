@@ -29,7 +29,8 @@ export default {
     return {
       activeIndex: 0,
       channelsList: [],
-      isShowAction: false
+      isShowAction: false,
+      art_id: null
     }
   },
   created () {
@@ -40,8 +41,9 @@ export default {
       const { channels } = await Channels()
       this.channelsList = channels
     },
-    openAction () {
+    openAction (artID) {
       this.isShowAction = true
+      this.art_id = artID
     }
   }
 }
