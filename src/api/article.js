@@ -16,3 +16,12 @@ export const dislike = (data) => {
     data
   })
 }
+
+// 举报文章
+export const report = (data) => {
+  return request({
+    url: '/article/reports',
+    method: 'POST',
+    data
+  })
+}

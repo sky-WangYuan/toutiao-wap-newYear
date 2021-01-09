@@ -9,7 +9,7 @@
     </van-tabs>
     <!-- 弹出反馈组件 -->
     <van-popup v-model="isShowAction">
-      <more-action @dislike="dislike"></more-action>
+      <more-action @dislike="dislikeAndReport($event, 'dislike')" @report="dislikeAndReport($event, 'report')"></more-action>
     </van-popup>
 
   </div>
@@ -19,7 +19,7 @@
 import ArticleList from './components/article_list'
 import { Channels } from '@/api/channels'
 import MoreAction from './components/moreAction'
-import { dislike } from '@/api/article'
+import { dislike, report } from '@/api/article'
 import eventBus from '@/utils/eventBus'
 export default {
   name: 'home',
@@ -48,13 +48,24 @@ export default {
       this.art_id = artID
     },
     // 不感兴趣
-    async dislike () {
+    // async dislike () {
+    //   try {
+    //     await dislike({ target: this.art_id })
+    //     eventBus.$emit('delArticle', this.channelsList[this.activeIndex].id, this.art_id)
+    //     this.$mynotify({ type: 'success', message: '删除成功' })
+    //     this.isShowAction = false
+    //   } catch (e) {
+    //     this.$mynotify({ type: 'success', message: '删除失败' })
+    //   }
+    // },
+    // 不感兴趣和举报
+    async dislikeAndReport (data, option) {
       try {
-        await dislike({ target: this.art_id })
-        eventBus.$emit('delArticle', this.channelsList[this.activeIndex].id, this.art_id)
+        option === 'dislike' ? await dislike({ target: this.art_id }) : await report({ target: this.art_id, type: data })
         this.$mynotify({ type: 'success', message: '删除成功' })
+        eventBus.$emit('delArticle', this.channelsList[this.activeIndex].id, this.art_id)
         this.isShowAction = false
-      } catch (e) {
+      } catch (error) {
         this.$mynotify({ type: 'success', message: '删除失败' })
       }
     }
