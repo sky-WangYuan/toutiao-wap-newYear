@@ -22,13 +22,15 @@
 
 <script>
 import { article } from '@/api/article'
-import { mapState } from 'vuex'
 import eventBus from '@/utils/eventBus'
 export default {
   name: 'article_list',
-  props: ['channel_id'],
-  computed: {
-    ...mapState(['user'])
+  props: {
+    channel_id: {
+      type: Number,
+      require: true,
+      default: null
+    }
   },
   data () {
     return {
