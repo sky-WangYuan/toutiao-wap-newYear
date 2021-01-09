@@ -23,6 +23,7 @@
 <script>
 import { article } from '@/api/article'
 import { mapState } from 'vuex'
+import eventBus from '@/utils/eventBus'
 export default {
   name: 'article_list',
   props: ['channel_id'],
@@ -41,6 +42,16 @@ export default {
   },
   created () {
     this.onLoad()
+    // 删除文章
+    eventBus.$on('delArticle', (channelID, articleID) => {
+      if (this.channel_id === channelID) {
+        // 同一个频道下
+        const index = this.articleList.findIndex(item => item.art_id.toString() === articleID)
+        if (index > -1) {
+          this.articleList.splice(index, 1)
+        }
+      }
+    })
   },
   methods: {
     // 获取文章列表

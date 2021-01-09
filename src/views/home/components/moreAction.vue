@@ -2,7 +2,7 @@
   <div class="container-action">
     <!-- 封装弹出框组件 -->
     <van-cell-group v-if="!isShow">
-      <van-cell title="不感兴趣"  />
+      <van-cell title="不感兴趣"  @click="$emit('dislike')"/>
       <van-cell title="反馈垃圾内容" @click="isShow=true" is-link/>
       <van-cell title="拉黑作者"/>
     </van-cell-group>

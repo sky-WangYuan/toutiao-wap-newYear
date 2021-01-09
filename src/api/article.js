@@ -7,3 +7,12 @@ export const article = (params) => {
     params: { ...params, with_top: 1 }
   })
 }
+
+// 反馈不喜欢接口
+export const dislike = (data) => {
+  return request({
+    url: '/article/dislikes',
+    method: 'POST',
+    data
+  })
+}

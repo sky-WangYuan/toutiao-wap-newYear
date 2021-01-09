@@ -9,7 +9,7 @@
     </van-tabs>
     <!-- 弹出反馈组件 -->
     <van-popup v-model="isShowAction">
-      <more-action></more-action>
+      <more-action @dislike="dislike"></more-action>
     </van-popup>
 
   </div>
@@ -19,6 +19,8 @@
 import ArticleList from './components/article_list'
 import { Channels } from '@/api/channels'
 import MoreAction from './components/moreAction'
+import { dislike } from '@/api/article'
+import eventBus from '@/utils/eventBus'
 export default {
   name: 'home',
   components: {
@@ -44,6 +46,17 @@ export default {
     openAction (artID) {
       this.isShowAction = true
       this.art_id = artID
+    },
+    // 不感兴趣
+    async dislike () {
+      try {
+        await dislike({ target: this.art_id })
+        eventBus.$emit('delArticle', this.channelsList[this.activeIndex].id, this.art_id)
+        this.$mynotify({ type: 'success', message: '删除成功' })
+        this.isShowAction = false
+      } catch (e) {
+        this.$mynotify({ type: 'success', message: '删除失败' })
+      }
     }
   }
 }
