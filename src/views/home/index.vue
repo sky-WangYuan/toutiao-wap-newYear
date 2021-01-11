@@ -17,7 +17,7 @@
     </van-popup>
     <!-- 编辑组件 -->
     <van-action-sheet :round="false" title="编辑频道" v-model="showChannelEdit">
-      <channel-edits :channel="channelsList"></channel-edits>
+      <channel-edits @mychannel="mychannelToHome" :channel="channelsList"></channel-edits>
    </van-action-sheet>
     <!-- <van-action-sheet v-model="showEditor" :actions="ChannelEditor"/>
     <channel-edits></channel-edits> -->
@@ -52,6 +52,12 @@ export default {
     this.getChannels() // 初始化时获取数据
   },
   methods: {
+    // 从频道编辑页点击频道切换到首页对应的频道下
+    mychannelToHome (id) {
+      const index = this.channelsList.findIndex(item => item.id === id)
+      this.activeIndex = index
+      this.showChannelEdit = false
+    },
     async getChannels () {
       const { channels } = await Channels()
       this.channelsList = channels
