@@ -8,9 +8,12 @@
         <van-button v-else @click="editing=false" size="mini" type="danger" plain>完成</van-button>
       </div>
       <van-grid class="van-hairline--left">
-        <van-grid-item v-for="item in channel" :key="item.id">
+        <van-grid-item v-for="(item,index) in channel" :key="item.id">
           <span class="f12">{{item.name}}</span>
-          <van-icon class="btn" name="cross"></van-icon>
+          <!-- 第一个推荐永远不要操作，是否显示x图标 -->
+          <template v-if="index!==0">
+           <van-icon v-show="editing" class="btn" name="cross"></van-icon>
+          </template>
         </van-grid-item>
       </van-grid>
     </div>
