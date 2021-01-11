@@ -20,8 +20,8 @@
     <div class="channel">
       <div class="tit">可选频道：</div>
       <van-grid class="van-hairline--left">
-        <van-grid-item v-for="index in 8" :key="index">
-          <span class="f12">频道{{index}}</span>
+        <van-grid-item v-for="checkoutChannel in checkoutChannels" :key="checkoutChannel.id">
+          <span class="f12">{{checkoutChannel.name}}</span>
           <van-icon class="btn" name="plus"></van-icon>
         </van-grid-item>
       </van-grid>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { allChannels } from '@/api/channels'
 export default {
   props: {
     channel: {
@@ -37,10 +38,25 @@ export default {
       default: () => []
     }
   },
+  computed: {
+    checkoutChannels () {
+      return this.allChannelsOption.filter(item => !this.channel.some(i => i.id === item.id))
+    }
+  },
   data () {
     return {
-      editing: false
+      editing: false,
+      allChannelsOption: []
     }
+  },
+  methods: {
+    async getAllchannels () {
+      const data = await allChannels()
+      this.allChannelsOption = data.channels
+    }
+  },
+  created () {
+    this.getAllchannels()
   }
 }
 </script>
