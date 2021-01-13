@@ -37,14 +37,7 @@ export default {
     }
   },
   created () {
-    this.historyList = ['马云', '哈哈']
-    // this.historyList = JSON.parse(localStorage.getItem(key) || '[]')
-    // try {
-    //   this.historyList = JSON.parse(localStorage.getItem(zhi) || '[]')
-    // } catch (error) {
-    //   console.log(error)
-    //   console.log('有错误')
-    // }
+    this.historyList = JSON.parse(localStorage.getItem(key) || '[]')
   },
   methods: {
     // 点击历史记录跳到搜索结果
