@@ -22,7 +22,7 @@
       <van-grid class="van-hairline--left">
         <van-grid-item v-for="checkoutChannel in checkoutChannels" :key="checkoutChannel.id">
           <span class="f12">{{checkoutChannel.name}}</span>
-          <van-icon class="btn" name="plus"></van-icon>
+          <van-icon @click="$emit('addChannel',checkoutChannel)" class="btn" name="plus"></van-icon>
         </van-grid-item>
       </van-grid>
     </div>

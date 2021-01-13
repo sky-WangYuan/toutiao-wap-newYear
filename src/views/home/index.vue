@@ -17,7 +17,12 @@
     </van-popup>
     <!-- 编辑组件 -->
     <van-action-sheet :round="false" title="编辑频道" v-model="showChannelEdit">
-      <channel-edits @delChannel="delChannel" :activeIndex="activeIndex" @mychannel="mychannelToHome" :channel="channelsList"></channel-edits>
+      <channel-edits
+        @addChannel="addChannel"
+         @delChannel="delChannel"
+         :activeIndex="activeIndex"
+         @mychannel="mychannelToHome"
+         :channel="channelsList"></channel-edits>
    </van-action-sheet>
     <!-- <van-action-sheet v-model="showEditor" :actions="ChannelEditor"/>
     <channel-edits></channel-edits> -->
@@ -26,7 +31,7 @@
 
 <script>
 import ArticleList from './components/article_list'
-import { Channels, delChannel } from '@/api/channels'
+import { Channels, delChannel, addChannel } from '@/api/channels'
 import MoreAction from './components/moreAction'
 import { dislike, report } from '@/api/article'
 import eventBus from '@/utils/eventBus'
@@ -52,6 +57,10 @@ export default {
     this.getChannels() // 初始化时获取数据
   },
   methods: {
+    async addChannel (channel) {
+      await addChannel(channel) // 将点击的频道放入本地缓存
+      this.channelsList.push(channel) // 更改data数据
+    },
     async delChannel (id) {
       try {
         await delChannel(id) // 删除本地缓存中数据

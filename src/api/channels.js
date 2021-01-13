@@ -54,3 +54,15 @@ export const delChannel = (id) => {
     }
   })
 }
+
+// 添加频道
+export const addChannel = (channel) => { // 将id和名字作为对象传入
+  return new Promise((resolve, reject) => {
+    // 判断是游客还是登录用户，获取到本地数据，将传入的数据添加到本地
+    const key = store.state.user.token ? user : tourist
+    const data = JSON.parse(localStorage.getItem(key)) // 转为数组对象
+    data.push(channel)
+    localStorage.setItem(key, JSON.stringify(data))
+    resolve()
+  })
+}
