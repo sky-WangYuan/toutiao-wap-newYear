@@ -3,7 +3,7 @@
     <!-- 搜索组件一级路由   返回上一个页面-->
     <van-nav-bar left-arrow title="搜索中心" @click-left="$router.back()"></van-nav-bar>
     <!-- 导航-搜索框 -->
-    <van-search v-model.trim="q"  placeholder="请输入搜索关键词" shape="round" />
+    <van-search @search="onsearch" v-model.trim="q"  placeholder="请输入搜索关键词" shape="round" />
     <!-- 联想搜索 -->
     <van-cell-group class="suggest-box" v-if="q">
       <van-cell icon="search">
@@ -14,7 +14,7 @@
     <div class="history-box" v-else-if="historyList.length">
       <div class="head">
         <span>历史记录</span>
-        <van-icon name="delete"></van-icon>
+        <van-icon name="delete" @click="clear"></van-icon>
       </div>
       <van-cell-group>
         <van-cell @click="toResult(item)" v-for="(item,index) in historyList" :key="index">
@@ -51,9 +51,25 @@ export default {
     toResult (text) {
       this.$router.push({ path: '/search/result', query: { q: text } })
     },
+    // 删除历史记录
     delHistory (index) {
       this.historyList.splice(index, 1)
       localStorage.setItem(key, JSON.stringify(this.historyList))
+    },
+    // 清空历史记录
+    clear () {
+      this.historyList = []
+      localStorage.setItem(key, '[]')
+    },
+    // 回车或软键盘搜索时，触发事件
+    onsearch () {
+      // 将输入的值放在历史记录和本地，跳转
+      if (!this.q) return // 非空判断
+      const obj = new Set(this.historyList) // 去重
+      obj.add(this.q) // 将新数据放在去重数组中
+      this.historyList = Array.from(obj) // 转为真正数组放在history历史记录数组中
+      localStorage.setItem(key, JSON.stringify(this.historyList))
+      this.$router.push({ path: '/search/result', query: { q: this.q } })
     }
   }
 }
