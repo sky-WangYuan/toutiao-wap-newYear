@@ -17,7 +17,7 @@
     </van-popup>
     <!-- 编辑组件 -->
     <van-action-sheet :round="false" title="编辑频道" v-model="showChannelEdit">
-      <channel-edits :activeIndex="activeIndex" @mychannel="mychannelToHome" :channel="channelsList"></channel-edits>
+      <channel-edits @delChannel="delChannel" :activeIndex="activeIndex" @mychannel="mychannelToHome" :channel="channelsList"></channel-edits>
    </van-action-sheet>
     <!-- <van-action-sheet v-model="showEditor" :actions="ChannelEditor"/>
     <channel-edits></channel-edits> -->
@@ -26,7 +26,7 @@
 
 <script>
 import ArticleList from './components/article_list'
-import { Channels } from '@/api/channels'
+import { Channels, delChannel } from '@/api/channels'
 import MoreAction from './components/moreAction'
 import { dislike, report } from '@/api/article'
 import eventBus from '@/utils/eventBus'
@@ -52,6 +52,22 @@ export default {
     this.getChannels() // 初始化时获取数据
   },
   methods: {
+    async delChannel (id) {
+      try {
+        await delChannel(id) // 删除本地缓存中数据
+
+        const index = this.channelsList.findIndex(item => item.id === id)
+        if (index <= this.activeIndex) {
+          this.activeIndex = this.activeIndex - 1
+        }
+        if (index > -1) {
+          // 找到了索引值，-1代表找不到
+          this.channelsList.splice(index, 1)
+        }
+      } catch (error) {
+        this.$mynotify({ type: 'danger', message: '删除失败' })
+      }
+    },
     // 从频道编辑页点击频道切换到首页对应的频道下
     mychannelToHome (id) {
       const index = this.channelsList.findIndex(item => item.id === id)
