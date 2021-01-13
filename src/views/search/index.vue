@@ -3,23 +3,23 @@
     <!-- 搜索组件一级路由   返回上一个页面-->
     <van-nav-bar left-arrow title="搜索中心" @click-left="$router.back()"></van-nav-bar>
     <!-- 导航-搜索框 -->
-    <van-search v-model="q"  placeholder="请输入搜索关键词" shape="round" />
+    <van-search v-model.trim="q"  placeholder="请输入搜索关键词" shape="round" />
     <!-- 联想搜索 -->
     <van-cell-group class="suggest-box" v-if="q">
       <van-cell icon="search">
         <span>j</span>ava
       </van-cell>
     </van-cell-group>
-    <!-- 历史记录 -->
-    <div class="history-box" v-if="!q">
+    <!-- 历史记录--有历史记录才显示此盒子 -->
+    <div class="history-box" v-else-if="historyList.length">
       <div class="head">
         <span>历史记录</span>
         <van-icon name="delete"></van-icon>
       </div>
       <van-cell-group>
-        <van-cell>
-          <a class="word_btn">电脑</a>
-          <van-icon class="close_btn" slot="right-icon" name="cross" />
+        <van-cell v-for="(item,index) in historyList" :key="index">
+          <a class="word_btn">{{item}}</a>
+          <van-icon @click="delHistory(index)" class="close_btn" slot="right-icon" name="cross" />
         </van-cell>
       </van-cell-group>
     </div>
@@ -27,11 +27,29 @@
 </template>
 
 <script>
+const key = 'history'
 export default {
   name: 'search',
   data () {
     return {
-      q: '' // 绑定搜索的数据
+      q: '', // 绑定搜索的数据
+      historyList: []
+    }
+  },
+  created () {
+    this.historyList = ['马云', '哈哈']
+    // this.historyList = JSON.parse(localStorage.getItem(key) || '[]')
+    // try {
+    //   this.historyList = JSON.parse(localStorage.getItem(zhi) || '[]')
+    // } catch (error) {
+    //   console.log(error)
+    //   console.log('有错误')
+    // }
+  },
+  methods: {
+    delHistory (index) {
+      this.historyList.splice(index, 1)
+      localStorage.setItem(key, JSON.stringify(this.historyList))
     }
   }
 }
