@@ -6,7 +6,7 @@
     <van-search @search="onsearch" v-model.trim="q"  placeholder="请输入搜索关键词" shape="round" />
     <!-- 联想搜索 -->
     <van-cell-group class="suggest-box" v-if="q">
-      <van-cell v-for="item in suggestionList" :key="item" icon="search">
+      <van-cell @click="toSuggestResult(item)" v-for="item in suggestionList" :key="item" icon="search">
        {{item}}
       </van-cell>
     </van-cell-group>
@@ -58,6 +58,14 @@ export default {
     this.historyList = JSON.parse(localStorage.getItem(key) || '[]')
   },
   methods: {
+    // 点击联想搜索 （生成历史记录、去搜索结果页）
+    toSuggestResult (text) {
+      const obj = new Set(this.historyList) // 将历史记录去重
+      obj.add(text) // 新数组添加到去重数组中
+      this.historyList = Array.from(obj)
+      localStorage.setItem(key, JSON.stringify(this.historyList))
+      this.$router.push({ path: '/search/result', query: { q: text } })
+    },
     // 点击历史记录跳到搜索结果
     toResult (text) {
       this.$router.push({ path: '/search/result', query: { q: text } })
