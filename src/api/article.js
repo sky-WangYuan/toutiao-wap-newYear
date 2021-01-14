@@ -25,3 +25,11 @@ export const report = (data) => {
     data
   })
 }
+
+// 联想搜索
+export const suggestion = (params) => {
+  return request({
+    url: '/suggestion',
+    params
+  })
+}

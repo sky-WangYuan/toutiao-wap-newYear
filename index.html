@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #debounce,
+        #throttle {
+            width: 100%;
+            height: 180px;
+            margin-top: 45px;
+            border: 3px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div id="debounce"></div>
+    <div id="throttle"></div>
+
+    <script>
+        var debounce=document.getElementById("debounce");
+        var throttle=document.getElementById("throttle");
+        var num1=0;
+        var num2=0;
+        //防抖
+        debounce.onmousemove=function(e){
+         clearTimeout(this.timeID)
+         this.timeID= setTimeout(function(){
+                num1++
+                e.target.innerText='防抖'+num1
+            }, 1000)
+        }
+
+        //节流
+        throttle.onmousemove=function(e){
+            if(!this.timer){    //如果不存在开启定时器
+                this.timer=setTimeout(()=>{
+                    this.timer=null  //下一次继续执行，否则永远不执行
+                    num2++
+                    e.target.innerText='节流'+num2
+                }, 1000)
+            }
+        }
+    </script>
+</body>
+</html>

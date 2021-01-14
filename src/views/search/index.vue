@@ -6,8 +6,8 @@
     <van-search @search="onsearch" v-model.trim="q"  placeholder="请输入搜索关键词" shape="round" />
     <!-- 联想搜索 -->
     <van-cell-group class="suggest-box" v-if="q">
-      <van-cell icon="search">
-        <span>j</span>ava
+      <van-cell v-for="item in suggestionList" :key="item" icon="search">
+       {{item}}
       </van-cell>
     </van-cell-group>
     <!-- 历史记录--有历史记录才显示此盒子 -->
@@ -27,13 +27,30 @@
 </template>
 
 <script>
+import { suggestion } from '@/api/article'
 const key = 'history'
 export default {
   name: 'search',
   data () {
     return {
       q: '', // 绑定搜索的数据
-      historyList: []
+      historyList: [],
+      suggestionList: []
+    }
+  },
+  watch: {
+    q () {
+      // 通过函数防抖实现联想搜索
+      clearTimeout(this.timeID)
+      this.timeID = setTimeout(async () => {
+      // 搜索关键词空，将联想数组清空
+        if (!this.q) {
+          this.suggestionList = []
+          return
+        }
+        const res = await suggestion({ q: this.q })
+        this.suggestionList = res.options
+      }, 500)
     }
   },
   created () {
