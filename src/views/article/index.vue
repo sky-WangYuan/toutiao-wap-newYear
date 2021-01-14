@@ -18,11 +18,13 @@
         &nbsp;&nbsp;&nbsp;&nbsp;
         <van-button round size="small" :class="{active: article.attitude===0}" plain icon="delete">不喜欢</van-button>
       </div>
+      <comment></comment>
     </div>
   </div>
 </template>
 
 <script>
+import Comment from './components/comment'
 import { articleInfo } from '@/api/article'
 import { followingUser, unFollowingUser } from '@/api/user'
 export default {
@@ -32,6 +34,9 @@ export default {
       article: {},
       loadingStatus: false // 点击关注的加载状态
     }
+  },
+  components: {
+    Comment
   },
   created () {
     this.getArticleInfo()
@@ -89,8 +94,9 @@ export default {
     padding: 10px 0;
     display: flex;
     position: sticky;
-    top: 46px;
+    top: 47px;
     background: #fff;
+        z-index: 2;
     .text {
       flex: 1;
       padding-left: 10px;
