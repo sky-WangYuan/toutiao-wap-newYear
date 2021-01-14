@@ -40,17 +40,18 @@ export default {
   },
   watch: {
     q () {
-      // 通过函数防抖实现联想搜索
-      clearTimeout(this.timeID)
-      this.timeID = setTimeout(async () => {
-      // 搜索关键词空，将联想数组清空
-        if (!this.q) {
-          this.suggestionList = []
-          return
-        }
-        const res = await suggestion({ q: this.q })
-        this.suggestionList = res.options
-      }, 500)
+      // 通过节流实现联想搜索
+      if (!this.timeID) {
+        this.timeID = setTimeout(async () => {
+          this.timeID = null
+          if (!this.q) {
+            this.suggestionList = []
+            return
+          }
+          const res = await suggestion({ q: this.q })
+          this.suggestionList = res.options
+        }, 500)
+      }
     }
   },
   created () {
