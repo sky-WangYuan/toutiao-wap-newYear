@@ -9,7 +9,7 @@
           <p class="name">{{article.aut_name}}</p>
           <p class="time">{{article.pubdate | time}}</p>
         </div>
-        <van-button @click="toggleFollowing" round size="small" type="info">{{article.is_followed? '已关注': '+ 关注'}}</van-button>
+        <van-button :loading="loadingStatus" @click="toggleFollowing" round size="small" type="info">{{article.is_followed? '已关注': '+ 关注'}}</van-button>
       </div>
       <div class="content" v-html="article.content">
       </div>
@@ -29,7 +29,8 @@ export default {
   name: 'article-info',
   data () {
     return {
-      article: {}
+      article: {},
+      loadingStatus: false // 点击关注的加载状态
     }
   },
   created () {
@@ -44,6 +45,9 @@ export default {
     // 关注或取关用户
     async toggleFollowing () {
       try {
+        this.loadingStatus = true
+        await this.$sleep() // 默认600ms请求一次
+
         if (this.article.is_followed) {
           // 已关注状态，变成未关注
           await unFollowingUser(this.article.aut_id)
@@ -52,6 +56,7 @@ export default {
           await followingUser({ target: this.article.aut_id })
         }
         this.article.is_followed = !this.article.is_followed
+        this.loadingStatus = false
       } catch (error) {
         this.$mynotify({ type: 'danger', message: '操作失败' })
       }
