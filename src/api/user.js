@@ -29,3 +29,10 @@ export const unFollowingUser = (target) => {
     method: 'DELETE'
   })
 }
+
+// 获取个人信息
+export const getUserInfo = () => {
+  return request({
+    url: '/user'
+  })
+}
