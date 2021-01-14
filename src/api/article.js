@@ -41,3 +41,10 @@ export const searchArticle = (params) => {
     params // 对象形式接收
   })
 }
+
+// 文章详情
+export const articleInfo = (articleId) => {
+  return request({
+    url: `/articles/${articleId}`
+  })
+}

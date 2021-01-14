@@ -4,7 +4,7 @@
 
       <van-list @load="onLoad" v-model="loading" :finished="finished" :finished-text="finishedText">
         <van-cell-group>
-          <van-cell v-for="item in articleList" :key="item.art_id.toString()">
+          <van-cell :to="`/article?articleId=${item.art_id.toString()}`" v-for="item in articleList" :key="item.art_id.toString()">
             <div class="article_item">
               <h3 class="van-ellipsis">{{item.title}}</h3>
               <div class="img_box" v-if="item.cover.type===3">

@@ -24,8 +24,23 @@
 </template>
 
 <script>
+import { articleInfo } from '@/api/article'
 export default {
-  name: 'article'
+  name: 'article-info',
+  data () {
+    return {
+      article: {}
+    }
+  },
+  created () {
+    this.getArticleInfo()
+  },
+  methods: {
+    async getArticleInfo () {
+      const { articleId } = this.$route.query
+      this.article = await articleInfo(articleId)
+    }
+  }
 }
 </script>
 

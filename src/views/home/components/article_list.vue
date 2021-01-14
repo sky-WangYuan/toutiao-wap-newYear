@@ -13,7 +13,7 @@
                 finished-text="没有更多了"
                 @load="onLoad"
                 >
-                <van-cell @click="$emit('showAction', item.art_id.toString())" v-for="item in articleList"  :key="item.art_id.toString()" value="X"  :title="item.title" :label="item.pubdate | time" />
+                <van-cell  @click="$emit('showAction', item.art_id.toString())" v-for="item in articleList"  :key="item.art_id.toString()" value="X"  :title="item.title" :label="item.pubdate | time" />
                     <!-- vant组件库中的van-cell更新单标签-无法使用之前van-cell双标签遍历标签内部数据图片和文字 --------------------------------->
                 </van-list>
             </van-pull-refresh>
