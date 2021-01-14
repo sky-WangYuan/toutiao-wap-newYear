@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <!-- 搜索组件一级路由   返回上一个页面-->
-    <van-nav-bar left-arrow title="搜索中心" @click-left="$router.back()"></van-nav-bar>
+    <van-nav-bar title="搜索中心" left-arrow @click-left="$router.back()"></van-nav-bar>
     <!-- 导航-搜索框 -->
     <van-search @search="onsearch" v-model.trim="q"  placeholder="请输入搜索关键词" shape="round" />
     <!-- 联想搜索 -->
