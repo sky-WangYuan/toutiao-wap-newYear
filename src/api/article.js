@@ -33,3 +33,11 @@ export const suggestion = (params) => {
     params
   })
 }
+
+// 文章的搜索结果
+export const searchArticle = (params) => {
+  return request({
+    url: '/search',
+    params // 对象形式接收
+  })
+}

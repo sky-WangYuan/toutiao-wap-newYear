@@ -12,7 +12,7 @@ export default {
 
     // 插件-处理延迟
     Vue.prototype.$sleep = sleep
-    Vue.filter('time', time)
+    Vue.filter('time', time) // 过滤器转换时间
   }
 }
 
