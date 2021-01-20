@@ -35,12 +35,12 @@
     <van-action-sheet :round="false" title="回复评论" v-model="showReply" class="reply_dialog">
       <!-- :immediate-check="false"仅关闭第一次的自动加载，第二次及以后开启自动加载 -->
       <van-list @load="getComments" :immediate-check="false" v-model="reply.loading" :finished="reply.finished" finished-text="没有更多数据了">
-        <div class="item van-hairline--bottom van-hairline--top" v-for="index in 8" :key="index">
-          <van-image round width="1rem" height="1rem" fit="fill" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+        <div class="item van-hairline--bottom van-hairline--top" v-for="reply in reply.commentList" :key="reply.com_id.toString()">
+          <van-image round width="1rem" height="1rem" fit="fill" :src="reply.aut_photo" />
           <div class="info">
-            <p><span class="name">一阵清风</span></p>
-            <p>评论的内容，。。。。</p>
-            <p><span class="time">两天内</span></p>
+            <p><span class="name">{{reply.aut_name}}</span></p>
+            <p>{{reply.content}}</p>
+            <p><span class="time">{{reply.pubdate | time}}</span></p>
           </div>
         </div>
       </van-list>
