@@ -48,3 +48,11 @@ export const articleInfo = (articleId) => {
     url: `/articles/${articleId}`
   })
 }
+
+// 对文章评论
+export const ArticleCommont = (params) => {
+  return request({
+    url: '/comments',
+    params
+  })
+}

@@ -4,7 +4,6 @@ import * as auth from '@/utils/auth'
 
 Vue.use(Vuex)
 const res = auth.getUser()
-// debugger
 export default new Vuex.Store({
   state: {
     // token信息
