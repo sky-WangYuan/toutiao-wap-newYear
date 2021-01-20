@@ -20,7 +20,7 @@
           <p>{{comment.content}}</p>
           <p>
             <span class="time">{{comment.pubdate | time}}</span>&nbsp;
-            <van-tag plain @click="openReply">{{comment.reply_count}} 回复</van-tag>
+            <van-tag plain @click="openReply(comment.com_id)">{{comment.reply_count}} 回复</van-tag>
           </p>
         </div>
       </div>
@@ -33,7 +33,8 @@
     </div>
     <!-- 对评论进行回复 -->
     <van-action-sheet :round="false" title="回复评论" v-model="showReply" class="reply_dialog">
-      <van-list v-model="reply.loading" :finished="reply.finished" finished-text="没有更多数据了">
+      <!-- :immediate-check="false"仅关闭第一次的自动加载，第二次及以后开启自动加载 -->
+      <van-list @load="getComments" :immediate-check="false" v-model="reply.loading" :finished="reply.finished" finished-text="没有更多数据了">
         <div class="item van-hairline--bottom van-hairline--top" v-for="index in 8" :key="index">
           <van-image round width="1rem" height="1rem" fit="fill" src="https://img.yzcdn.cn/vant/cat.jpeg" />
           <div class="info">
@@ -67,14 +68,16 @@ export default {
       showReply: false,
       reply: {
         loading: false,
-        finished: false
+        finished: false,
+        commentID: null, // 评论的id
+        commentList: [], // 评论的数据
+        offset: null // 评论的参数
       }
     }
   },
   methods: {
     async onLoad () {
       const res = await ArticleCommont({ type: 'a', source: this.$route.query.articleId, offset: this.offset })
-      console.log(res)
       this.comments.push(...res.results)
       this.loading = false
       // 判断是否是最后一页数据
@@ -85,8 +88,25 @@ export default {
       }
     },
     // 点击恢复打开弹层
-    openReply () {
-      this.showReply = true
+    openReply (commentId) {
+      this.showReply = true // 打开评论的弹层
+      this.reply.commentID = commentId // 用评论id获取对应的评论
+      this.reply.loading = true
+      this.reply.finished = false
+      this.reply.commentList = []
+      this.reply.offset = null
+      this.getComments()
+    },
+    // 获取评论的评论
+    async  getComments () {
+      const res = await ArticleCommont({ type: 'c', source: this.reply.commentID.toString(), offset: this.reply.offset })
+      // console.log(res)
+      this.reply.commentList.push(...res.results) // 将评论数据放在评论列表中
+      this.reply.loading = false
+      this.reply.finished = res.end_id === res.last_id // 如果当前页最后的id等于整个评论的id，加载完成
+      if (!this.reply.finished) {
+        this.reply.offset = res.last_id
+      }
     }
   }
 }

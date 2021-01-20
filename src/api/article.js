@@ -49,7 +49,7 @@ export const articleInfo = (articleId) => {
   })
 }
 
-// 对文章评论
+// 对文章评论 且 对评论进行评论 （参数不同则代表的含义不同）
 export const ArticleCommont = (params) => {
   return request({
     url: '/comments',
