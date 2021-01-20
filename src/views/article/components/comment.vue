@@ -20,7 +20,7 @@
           <p>{{comment.content}}</p>
           <p>
             <span class="time">{{comment.pubdate | time}}</span>&nbsp;
-            <van-tag plain @click="showReply=true">{{comment.reply_count}} 回复</van-tag>
+            <van-tag plain @click="openReply">{{comment.reply_count}} 回复</van-tag>
           </p>
         </div>
       </div>
@@ -31,6 +31,10 @@
         <span class="submit" v-else slot="button">提交</span>
       </van-field>
     </div>
+    <!-- 对评论进行回复 -->
+    <van-action-sheet :round="false" title="回复评论" v-model="showReply" class="reply_dialog">
+      <van-list v-model="reply.loading" :finished="reply.finished" finished-text="没有更多数据了"></van-list>
+    </van-action-sheet>
   </div>
 
   <!-- 都不输入框 -->
@@ -50,7 +54,12 @@ export default {
       // 控制提交中状态数据
       submiting: false,
       offset: null, // 文章分页数据
-      comments: [] // 文章评论列表
+      comments: [], // 文章评论列表
+      showReply: false,
+      reply: {
+        loading: false,
+        finished: false
+      }
     }
   },
   methods: {
@@ -65,6 +74,10 @@ export default {
         // 如果不相等，还有下一页数据
         this.offset = res.last_id
       }
+    },
+    // 点击恢复打开弹层
+    openReply () {
+      this.showReply = true
     }
   }
 }
@@ -115,6 +128,26 @@ export default {
   .submit {
     font-size: 12px;
     color: #3296fa;
+  }
+}
+//对评论的回复
+.reply_dialog {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  .van-action-sheet__header {
+    background: #3296fa;
+    color: #fff;
+    .van-icon-close {
+      color: #fff;
+    }
+  }
+  .van-action-sheet__content{
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 10px 44px;
   }
 }
 </style>
