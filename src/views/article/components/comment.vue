@@ -33,7 +33,16 @@
     </div>
     <!-- 对评论进行回复 -->
     <van-action-sheet :round="false" title="回复评论" v-model="showReply" class="reply_dialog">
-      <van-list v-model="reply.loading" :finished="reply.finished" finished-text="没有更多数据了"></van-list>
+      <van-list v-model="reply.loading" :finished="reply.finished" finished-text="没有更多数据了">
+        <div class="item van-hairline--bottom van-hairline--top" v-for="index in 8" :key="index">
+          <van-image round width="1rem" height="1rem" fit="fill" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+          <div class="info">
+            <p><span class="name">一阵清风</span></p>
+            <p>评论的内容，。。。。</p>
+            <p><span class="time">两天内</span></p>
+          </div>
+        </div>
+      </van-list>
     </van-action-sheet>
   </div>
 
