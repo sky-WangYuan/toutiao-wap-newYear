@@ -15,7 +15,7 @@
       </van-cell>
       <van-cell is-link title="名称" @click="showName=true" :value="user.name" />
       <van-cell is-link title="性别" @click="showGender=true" :value="user.gender===0?'男': '女'"/>
-      <van-cell is-link title="生日" @click="showDate=true" :value="user.birthday" />
+      <van-cell is-link title="生日" @click="birthday" :value="user.birthday" />
     </van-cell-group>
 
     <!-- 头像弹层 -->
@@ -23,12 +23,13 @@
       <van-cell title="本地相册" is-link></van-cell>
       <van-cell title="拍照" is-link></van-cell>
     </van-popup>
-    <!-- 姓名弹层 -->
-    <van-popup v-model="showName" style="width:80%">
-      <van-field v-model="user.name" type="textarea" rows="4"></van-field>
+    <!-- 姓名弹层 禁用点击遮罩层关闭弹窗-->
+    <van-popup v-model="showName" :close-on-click-overlay="false" style="width:80%">
+      <van-field :error-message="err_NameMsg" v-model="user.name" type="textarea" rows="4"></van-field>
+      <van-button type="info" size="large" @click="btnName">确定</van-button>
     </van-popup>
     <!-- 性别弹层 -->
-    <van-action-sheet v-model="showGender" :actions="actions" cancel-text="取消"></van-action-sheet>
+    <van-action-sheet v-model="showGender" :actions="actions" @select="selectGender" cancel-text="取消"></van-action-sheet>
     <!-- 日历弹层 -->
     <van-popup v-model="showDate" position="bottom">
       <van-datetime-picker
@@ -36,12 +37,15 @@
         type="date"
         :min-date="minDate"
         :max-date="maxDate"
+        @cancel="showDate=false"
+        @confirm="confirmDate"
       />
     </van-popup>
   </div>
 </template>
 
 <script>
+import dayjs from 'dayjs'
 export default {
   name: 'profile',
   data () {
@@ -52,7 +56,7 @@ export default {
       user: {
         name: '喜喜',
         gender: 0,
-        birthday: '2021-1-21'
+        birthday: '2021-1-18'
       },
       showPhoto: false, // 头像弹层
       showName: false, // 姓名弹层
@@ -61,7 +65,37 @@ export default {
       actions: [
         { name: '男' },
         { name: '女' }
-      ]
+      ],
+      err_NameMsg: '' // 错误提示信息
+    }
+  },
+  methods: {
+    // 点击修改名称的确定按钮
+    btnName () {
+      // 校验必须是1-6位
+      if (this.user.name.length < 1 || this.user.name.length > 6) {
+        this.err_NameMsg = '输入的数字须保持在1-6位之间'
+        return false
+      }
+      this.err_NameMsg = ''
+      this.showName = false
+    },
+    // 选择性别
+    selectGender (item) {
+      this.user.gender = item.name === '男' ? 0 : 1
+      this.showGender = false
+    },
+    // 点击生日资料
+    birthday () {
+      this.showDate = true
+      this.currentDate = new Date(this.user.birthday)
+    },
+    // 确认日期时间
+    confirmDate (selectTime) {
+      // 将选择的时间赋值给生日资料中
+      // console.log(selectTime) 对象形式的日期，转换为字符串格式
+      this.user.birthday = dayjs(selectTime).format('YYYY-MM-DD')
+      this.showDate = false
     }
   }
 }

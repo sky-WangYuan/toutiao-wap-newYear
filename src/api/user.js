@@ -30,7 +30,7 @@ export const unFollowingUser = (target) => {
   })
 }
 
-// 获取个人信息
+// 获取个人信息（文章的发表状态）
 export const getUserInfo = () => {
   return request({
     url: '/user'
