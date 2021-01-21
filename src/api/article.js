@@ -49,10 +49,19 @@ export const articleInfo = (articleId) => {
   })
 }
 
-// 对文章评论 且 对评论进行评论 （参数不同则代表的含义不同）
+// 获取文章评论 且 对评论进行评论 （参数不同则代表的含义不同）
 export const ArticleCommont = (params) => {
   return request({
     url: '/comments',
     params
+  })
+}
+
+// 添加评论或评论回复
+export const addArticleOrReplyComment = (data) => {
+  return request({
+    url: '/comments',
+    method: 'POST',
+    data
   })
 }
