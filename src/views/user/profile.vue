@@ -10,7 +10,7 @@
           fit="cover"
           round
           @click="showPhoto=true"
-          src="https://img.yzcdn.cn/vant/cat.jpeg"
+          :src="user.photo"
         />
       </van-cell>
       <van-cell is-link title="名称" @click="showName=true" :value="user.name" />
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { getUserProfile } from '@/api/user'
 import dayjs from 'dayjs'
 export default {
   name: 'profile',
@@ -96,7 +97,15 @@ export default {
       // console.log(selectTime) 对象形式的日期，转换为字符串格式
       this.user.birthday = dayjs(selectTime).format('YYYY-MM-DD')
       this.showDate = false
+    },
+    // 获取编辑资料信息
+    async getUserProfile () {
+      const res = await getUserProfile()
+      this.user = res
     }
+  },
+  created () {
+    this.getUserProfile()
   }
 }
 </script>

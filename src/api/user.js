@@ -36,3 +36,10 @@ export const getUserInfo = () => {
     url: '/user'
   })
 }
+
+// 获取【编辑资料】组件中的个人信息接口
+export const getUserProfile = () => {
+  return request({
+    url: '/user/profile'
+  })
+}
