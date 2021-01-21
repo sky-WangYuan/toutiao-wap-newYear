@@ -92,7 +92,7 @@ export default {
     openReply (commentId) {
       this.showReply = true // 打开评论的弹层
       this.reply.commentID = commentId // 用评论id获取对应的评论
-      // this.reply.loading = true
+      // this.reply.loading = true  //清空原有数据
       // this.reply.finished = false
       // this.reply.commentList = []
       // this.reply.offset = null

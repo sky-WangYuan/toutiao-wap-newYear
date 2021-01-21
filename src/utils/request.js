@@ -60,12 +60,12 @@ instance.interceptors.response.use(response => {
       } catch (error) {
         // 如果换token或任意代码出错
         store.commit('delUser')
-        router.push({ path: '/login', query: { redirectUrl: router.currentRoute.path } })
+        router.push({ path: '/login', query: { redirectUrl: router.currentRoute.fullPath } })
       }
     } else {
       // 无refresh_token
       store.commit('delUser')
-      router.push({ path: '/login', query: { redirectUrl: router.currentRoute.path } })
+      router.push({ path: '/login', query: { redirectUrl: router.currentRoute.fullPath } })
     }
   }
   return Promise.reject(err)
