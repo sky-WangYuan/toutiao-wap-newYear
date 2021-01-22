@@ -20,7 +20,7 @@
 
     <!-- 头像弹层 -->
     <van-popup v-model="showPhoto" style="width:80%">
-      <van-cell title="本地相册" is-link></van-cell>
+      <van-cell title="本地相册" @click="localPhoto" is-link></van-cell>
       <van-cell title="拍照" is-link></van-cell>
     </van-popup>
     <!-- 姓名弹层 禁用点击遮罩层关闭弹窗-->
@@ -41,11 +41,13 @@
         @confirm="confirmDate"
       />
     </van-popup>
+    <!-- 本地相册的提交文件 -->
+    <input type="file" @change="photoChange" ref="photoFile" style="display:none">
   </div>
 </template>
 
 <script>
-import { getUserProfile } from '@/api/user'
+import { getUserProfile, updateUserPhoto } from '@/api/user'
 import dayjs from 'dayjs'
 export default {
   name: 'profile',
@@ -81,28 +83,39 @@ export default {
       this.err_NameMsg = ''
       this.showName = false
     },
-    // 选择性别
-    selectGender (item) {
+
+    selectGender (item) { // 选择性别
       this.user.gender = item.name === '男' ? 0 : 1
       this.showGender = false
     },
-    // 点击生日资料
-    birthday () {
+
+    birthday () { // 点击生日资料
       this.showDate = true
       this.currentDate = new Date(this.user.birthday)
     },
-    // 确认日期时间
-    confirmDate (selectTime) {
-      // 将选择的时间赋值给生日资料中
-      // console.log(selectTime) 对象形式的日期，转换为字符串格式
+
+    confirmDate (selectTime) { // 确认日期时间
+      // 将选择的时间赋值给生日资料中 （对象形式的日期，转换为字符串格式）
       this.user.birthday = dayjs(selectTime).format('YYYY-MM-DD')
       this.showDate = false
     },
-    // 获取编辑资料信息
-    async getUserProfile () {
+    async getUserProfile () { // 获取编辑资料信息
       const res = await getUserProfile()
       this.user = res
+    },
+    localPhoto () { // 点击头像的本地相册，触发input:file文件的点击事件
+      this.$refs.photoFile.click()
+    },
+    async photoChange () { // 更新头像 （选中文件时）
+      // console.dir(this.$refs.photoFile.files[0]) // 文件地址
+
+      const fd = new FormData()
+      fd.append('photo', this.$refs.photoFile.files[0])
+      const res = await updateUserPhoto(fd) // 需要传递data参数
+      this.user.photo = res.photo
+      this.showPhoto = false
     }
+
   },
   created () {
     this.getUserProfile()

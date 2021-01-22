@@ -43,3 +43,12 @@ export const getUserProfile = () => {
     url: '/user/profile'
   })
 }
+
+// 局部更新头像接口
+export const updateUserPhoto = (data) => {
+  return request({
+    url: '/user/photo',
+    method: 'patch',
+    data
+  })
+}
