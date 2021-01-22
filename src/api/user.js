@@ -37,18 +37,27 @@ export const getUserInfo = () => {
   })
 }
 
-// 获取【编辑资料】组件中的个人信息接口
+// 【编辑资料】获取组件中的个人信息接口
 export const getUserProfile = () => {
   return request({
     url: '/user/profile'
   })
 }
 
-// 局部更新头像接口
+// 【编辑资料】局部更新头像接口
 export const updateUserPhoto = (data) => {
   return request({
     url: '/user/photo',
     method: 'patch',
+    data
+  })
+}
+
+// 【编辑资料】保存用户信息
+export const saveUserInfo = (data) => {
+  return request({
+    url: '/user/profile',
+    method: 'PATCH',
     data
   })
 }
