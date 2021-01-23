@@ -120,6 +120,7 @@ export default {
       try {
         await saveUserInfo({ ...this.user, photo: null })
         this.$mynotify({ type: 'success', message: '保存成功' })
+        this.$router.push('/user')
       } catch (error) {
         this.$mynotify({ type: 'success', message: '保存失败' })
       }
