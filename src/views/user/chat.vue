@@ -8,7 +8,7 @@
       </div>
       <div class="chat-item right">
         <div class="chat-pao">ewqewq</div>
-        <van-image  fit="cover" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
+        <van-image  fit="cover" round :src="photo" />
       </div>
     </div>
     <div class="reply-container van-hairline--top">
@@ -22,16 +22,21 @@
 
 <script>
 import defaultPhoto from '@/assets/images/yy.jpg'
+import { mapState } from 'vuex'
 export default {
   name: 'chat',
+  computed: {
+    ...mapState(['photo']) // 用户的头像
+  },
   data () {
     return {
       value: '',
       loading: false,
-      defaultPhoto
+      defaultPhoto // 客服的默认头像
     }
   },
   methods: {
+
     send () {
 
     }

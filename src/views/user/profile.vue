@@ -49,6 +49,7 @@
 <script>
 import { getUserProfile, updateUserPhoto, saveUserInfo } from '@/api/user'
 import dayjs from 'dayjs'
+import { mapMutations } from 'vuex'
 export default {
   name: 'profile',
   data () {
@@ -73,6 +74,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['updatePhoto']),
     // 点击修改名称的确定按钮
     btnName () {
       // 校验必须是1-6位
@@ -102,6 +104,7 @@ export default {
     async getUserProfile () { // 获取编辑资料信息
       const res = await getUserProfile()
       this.user = res
+      this.updatePhoto({ photo: res.photo }) // 更新vuex中state中公共数据
     },
     localPhoto () { // 点击头像的本地相册，触发input:file文件的点击事件
       this.$refs.photoFile.click()
@@ -114,6 +117,7 @@ export default {
       const res = await updateUserPhoto(fd) // 需要传递data参数
       this.user.photo = res.photo
       this.showPhoto = false
+      this.updatePhoto({ photo: res.photo }) // 更新头像是同步vuex公共数据
     },
 
     async saveUserInfo () { // 点击右上角保存用户信息
