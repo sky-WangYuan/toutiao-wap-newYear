@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <van-nav-bar fixed left-arrow @click-left="$router.back()" title="小智同学"></van-nav-bar>
+    <van-nav-bar fixed left-arrow @click-left="$router.back()" title="小花花客服"></van-nav-bar>
     <div class="chat-list">
       <div class="chat-item left">
-        <van-image fit="cover" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
+        <van-image fit="cover" round :src="defaultPhoto" />
         <div class="chat-pao">ewqewq</div>
       </div>
       <div class="chat-item right">
@@ -21,12 +21,19 @@
 </template>
 
 <script>
+import defaultPhoto from '@/assets/images/yy.jpg'
 export default {
   name: 'chat',
   data () {
     return {
       value: '',
-      loading: false
+      loading: false,
+      defaultPhoto
+    }
+  },
+  methods: {
+    send () {
+
     }
   }
 }
