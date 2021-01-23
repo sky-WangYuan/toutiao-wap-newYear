@@ -1,15 +1,16 @@
 <template>
   <div class="container">
-    <van-nav-bar fixed left-arrow @click-left="$router.back()" title="小花花客服"></van-nav-bar>
+    <van-nav-bar fixed left-arrow @click-left="$router.back()" title="高圆圆"></van-nav-bar>
     <div class="chat-list">
-      <div class="chat-item left">
-        <van-image fit="cover" round :src="defaultPhoto" />
-        <div class="chat-pao">ewqewq</div>
+      <!-- 通过item.name 判断是yy则左侧显示客服消息及头像 反之右侧显示 -->
+      <div class="chat-item" :class="{right: item.name!='yy', left: item.name==='yy'}" v-for="(item,index) in chatContent" :key="index">
+        <van-image v-if="item.name==='yy'" fit="cover" round :src="defaultPhoto" />
+        <div class="chat-pao">{{item.msg}}</div>
+        <van-image v-if="item.name!='yy'" fit="cover" round :src="photo" />
       </div>
-      <div class="chat-item right">
+      <!-- <div class="chat-item right">
         <div class="chat-pao">ewqewq</div>
-        <van-image  fit="cover" round :src="photo" />
-      </div>
+      </div> -->
     </div>
     <div class="reply-container van-hairline--top">
       <van-field v-model="value" placeholder="说点什么...">
@@ -23,17 +24,34 @@
 <script>
 import defaultPhoto from '@/assets/images/yy.jpg'
 import { mapState } from 'vuex'
+import io from 'socket.io-client'
 export default {
   name: 'chat',
   computed: {
-    ...mapState(['photo']) // 用户的头像
+    ...mapState(['photo', 'user']) // 用户的头像
   },
   data () {
     return {
       value: '',
       loading: false,
-      defaultPhoto // 客服的默认头像
+      defaultPhoto, // 客服的默认头像
+      chatContent: [{ msg: '嗨，你掉头发了吗', name: 'yy' }] // 聊天内容
     }
+  },
+  created () {
+    // 连接socket服务器 - this是组件实例对象，在this中添加socketIO变量（不加this报错,not defined）
+    this.socketIO = io('http://ttapi.research.itcast.cn', { query: { token: this.user.token } }) // 得到socketIO实例对象
+
+    // 监听连接成功
+    this.socketIO.on('connect', function () {
+      console.log('服务器连接成功') // 连接成功，让客服主动发一条消息
+      this.chatContent.push({ msg: '嗨，你掉头发了吗', name: 'yy' })
+    })
+
+    // 接收客服消息
+    this.socketIO.on('message', data => { // data中是服务器传的数据(msg timestmp)，放在chatContent中
+      this.chatContent.push({ ...data, name: 'yy' })
+    })
   },
   methods: {
 
