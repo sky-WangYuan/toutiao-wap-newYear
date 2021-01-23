@@ -70,7 +70,7 @@ export default {
       if (this.mobileBlur() && this.codeBlur()) { // 如果输入的校验信息无误，发请求
         // 1、获取token
         const res = await login(this.userLogin)
-        console.log(res)
+        // console.log(res)
         // 2、更新vuex和本地存储
         this.updataUser({ user: res }) // 传参数payload
         this.$mynotify({ message: '登录成功', type: 'success' })
