@@ -54,9 +54,16 @@ export default {
     })
   },
   methods: {
-
-    send () {
-
+    // 点击提交
+    async send () {
+      // 非空判断
+      if (!this.value) return false
+      this.loading = true
+      await this.$sleep() // 默认延迟600毫秒
+      this.socketIO.emit('message', { msg: this.value, timestamp: Date.now() })
+      this.chatContent.push({ msg: this.value, timestamp: Date.now() }) // 将添加的数据放在对话列表中
+      this.value = ''
+      this.loading = false
     }
   }
 }
