@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <van-nav-bar fixed left-arrow @click-left="$router.back()" title="高圆圆"></van-nav-bar>
-    <div class="chat-list">
+    <div class="chat-list" ref="chatList">
       <!-- 通过item.name 判断是yy则左侧显示客服消息及头像 反之右侧显示 -->
       <div class="chat-item" :class="{right: item.name!='yy', left: item.name==='yy'}" v-for="(item,index) in chatContent" :key="index">
         <van-image v-if="item.name==='yy'" fit="cover" round :src="defaultPhoto" />
@@ -15,7 +15,7 @@
     <div class="reply-container van-hairline--top">
       <van-field v-model="value" placeholder="说点什么...">
         <van-loading v-if="loading" slot="button" type="spinner" size="16px"></van-loading>
-        <span v-else @click="send()" slot="button" style="font-size:12px;color:#999">提交</span>
+        <span v-else @click="send()" slot="button" style="font-size:12px;color:#999">发送</span>
       </van-field>
     </div>
   </div>
@@ -51,6 +51,7 @@ export default {
     // 接收客服消息
     this.socketIO.on('message', data => { // data中是服务器传的数据(msg timestmp)，放在chatContent中
       this.chatContent.push({ ...data, name: 'yy' })
+      this.scrollBottom() // 接消息，滚动到底部
     })
   },
   methods: {
@@ -58,12 +59,22 @@ export default {
     async send () {
       // 非空判断
       if (!this.value) return false
+
       this.loading = true
       await this.$sleep() // 默认延迟600毫秒
       this.socketIO.emit('message', { msg: this.value, timestamp: Date.now() })
       this.chatContent.push({ msg: this.value, timestamp: Date.now() }) // 将添加的数据放在对话列表中
       this.value = ''
       this.loading = false
+
+      this.scrollBottom() // 发消息，滚动到底部
+    },
+
+    // 发消息、接消息 滚动到聊天最后位置
+    scrollBottom () {
+      this.$nextTick(() => { // 数据改变及 视图更新后执行 （vue中数据和试图不同时更新）
+        this.$refs.chatList.scrollTop = this.$refs.chatList.scrollHeight
+      })
     }
   }
 }
