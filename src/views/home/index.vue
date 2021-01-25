@@ -4,7 +4,7 @@
     <van-tabs v-model="activeIndex" swipeable>
       <van-tab :title="item.name" v-for="item in channelsList" :key="item.id">
        <!-- 列表组件 -->
-       <article-list @showAction="openAction" :channel_id="item.id"></article-list>
+         <article-list @showAction="openAction" :channel_id="item.id"></article-list>
       </van-tab>
     </van-tabs>
     <!-- 编辑频道的 -->

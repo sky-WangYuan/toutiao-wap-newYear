@@ -3,9 +3,12 @@
     <!-- 头部导航栏 -->
     <van-nav-bar v-if="showNavbar" fixed title="我的头条" right-text="搜索" @click-right="$router.push('/search')"></van-nav-bar>
 
-    <!-- 二级路由容器 -->
+    <!-- 二级路由容器 首页/问答/视频/我的 -->
     <div class="my-wrapper" :class="{noTop: !showNavbar}">
+      <keep-alive>
+        <!-- 组件缓存，原本要缓存组件，但若把组件容器缓存了意味容器中的4个组件都被缓存 -->
        <router-view></router-view>
+      </keep-alive>
     </div>
     <!-- 底部切换栏目 -->
     <van-tabbar route>
