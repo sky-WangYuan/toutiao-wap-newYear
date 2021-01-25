@@ -1,6 +1,6 @@
 <template>
    <!-- 内容区 阅读记忆-->
-        <div class="scroll-wrapper">
+        <div ref="myScroll" class="scroll-wrapper" @scroll="remember">
             <!-- 下拉刷新 -->
             <van-pull-refresh
                 v-model="onrefresh"
@@ -39,7 +39,9 @@ export default {
       articleList: [],
       onrefresh: false, // 刷新状态
       refreshText: '', // 刷新成功提示文字
-      timestamp: null
+      timestamp: null,
+      scrollTop: 0 // 阅读记忆-滚动的距离
+
     }
   },
   created () {
@@ -54,6 +56,9 @@ export default {
         }
       }
     })
+  },
+  activated () { // keep-alive 组件切换回来激活时 唤醒的函数
+    this.$refs.myScroll.scrollTop = this.scrollTop
   },
   methods: {
     // 获取文章列表
@@ -84,6 +89,12 @@ export default {
       } else {
         this.refreshText = '已是最新数据'
       }
+    },
+
+    // 记录滚动的位置-阅读记忆
+    remember (e) {
+      // console.log(e)
+      this.scrollTop = e.target.scrollTop
     }
   }
 }

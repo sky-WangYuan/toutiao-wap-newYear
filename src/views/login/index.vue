@@ -25,7 +25,7 @@ export default {
   data () {
     return {
       userLogin: {
-        mobile: '13911111119',
+        mobile: '13911111119', // 另一个测试号（老高的）：13041139705
         code: '246810'
       },
       // 错误提示信息
