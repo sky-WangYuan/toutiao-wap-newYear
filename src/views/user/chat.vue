@@ -54,6 +54,9 @@ export default {
       this.scrollBottom() // 接消息，滚动到底部
     })
   },
+  beforeDestroy () { // 页面销毁前关闭socket连接
+    this.socketIO.close()
+  },
   methods: {
     // 点击提交
     async send () {
