@@ -64,6 +64,8 @@ export default {
       await this.$sleep() // 默认延迟600毫秒
       this.socketIO.emit('message', { msg: this.value, timestamp: Date.now() })
       this.chatContent.push({ msg: this.value, timestamp: Date.now() }) // 将添加的数据放在对话列表中
+      // （问题：接发消息后，未滚动到最后一条数据）在数据中添加新消息，调用scrollBottom时 有可能视图渲染还未更新，所以用$nextTick
+
       this.value = ''
       this.loading = false
 
@@ -72,7 +74,7 @@ export default {
 
     // 发消息、接消息 滚动到聊天最后位置
     scrollBottom () {
-      this.$nextTick(() => { // 数据改变及 视图更新后执行 （vue中数据和试图不同时更新）
+      this.$nextTick(() => { // 数据改变及 视图更新后执行 （vue中数据和视图不同时更新）
         this.$refs.chatList.scrollTop = this.$refs.chatList.scrollHeight
       })
     }
