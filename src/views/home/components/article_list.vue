@@ -58,7 +58,9 @@ export default {
     })
   },
   activated () { // keep-alive 组件切换回来激活时 唤醒的函数
-    this.$refs.myScroll.scrollTop = this.scrollTop
+    if (this.scrollTop && this.$refs.myScroll) { // 如果滚动不为0 且 div元素存在则滚到固定位置
+      this.$refs.myScroll.scrollTop = this.scrollTop
+    }
   },
   methods: {
     // 获取文章列表
