@@ -28,7 +28,7 @@ const routes = [
     path: '/',
     component: Layout, // 布局容器
     children: [
-      { path: '/', component: Home },
+      { path: '/', component: Home, meta: { isKeepAlive: true } }, // 将一级路由layout缓存 从别的一级路由返回后保持不刷新
       { path: '/question', component: Question },
       { path: '/video', component: Videos },
       { path: '/user', component: User }
