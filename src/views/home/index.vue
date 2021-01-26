@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <!-- 标签栏目 -->
-    <van-tabs v-model="activeIndex" swipeable>
-      <van-tab :title="item.name" v-for="item in channelsList" :key="item.id">
+    <van-tabs v-model="activeIndex" @change="changeTabs" swipeable>
+      <van-tab  :title="item.name" v-for="item in channelsList" :key="item.id">
        <!-- 列表组件 -->
          <article-list @showAction="openAction" :channel_id="item.id"></article-list>
       </van-tab>
@@ -57,6 +57,10 @@ export default {
     this.getChannels() // 初始化时获取数据
   },
   methods: {
+    // 切换标签传递id，做阅读记忆的缓存优化-切换多个标签从别的分类回来时，保证各标签还在原来的位置
+    changeTabs () {
+      eventBus.$emit('changeTab', this.channelsList[this.activeIndex].id)
+    },
     async addChannel (channel) {
       await addChannel(channel) // 将点击的频道放入本地缓存
       this.channelsList.push(channel) // 更改data数据

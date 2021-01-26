@@ -46,6 +46,7 @@ export default {
   },
   created () {
     this.onLoad()
+
     // 删除文章
     eventBus.$on('delArticle', (channelID, articleID) => {
       if (this.channel_id === channelID) {
@@ -56,8 +57,25 @@ export default {
         }
       }
     })
+
+    // 接收传递的tab标签页id-切换多个tab再从别的分类回来时，只有最后一个保留阅读记忆
+    eventBus.$on('changeTab', id => {
+      if (id === this.channel_id) { // 传递的id和当前组件实例id一致，激活的是当前的组件实例
+        // debugger
+        this.$nextTick(() => { // 切换tab 且 视图渲染完后 执行
+          if (this.scrollTop && this.$refs.myScroll) {
+            this.$refs.myScroll.scrollTop = this.scrollTop // 滚动到阅读记忆的位置
+          }
+        })
+      }
+    })
   },
   activated () { // keep-alive 组件切换回来激活时 唤醒的函数
+    // console.log('唤醒了')
+    // 切换多个tab页，从别的分类切回来时 只有最后一次tab显示阅读记忆，别的都刷新
+    // 原因： 唤醒了所有的组件实例，只有最后一个tab页有dom
+    // 解决：切换tab时，滚动到固定的位置
+
     if (this.scrollTop && this.$refs.myScroll) { // 如果滚动不为0 且 div元素存在则滚到固定位置
       this.$refs.myScroll.scrollTop = this.scrollTop
     }
